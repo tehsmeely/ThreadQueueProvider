@@ -1,8 +1,8 @@
-import threading, Queue, time
+import threading, Queue, time, random
 
 from threadQueueProvider import ThreadQueueProvider
 
-
+random.seed()
 
 
 class Getter(threading.Thread):
@@ -18,13 +18,17 @@ class Getter(threading.Thread):
 
 	def _loop(self):
 		while self._isRunning:
+			print "Getter: before sleep"
 			time.sleep(5)
-			print "Getter: getting val: {}".format(provider.queue.get())
+			print "Getter: getting val: {}".format(provider.getVal())
 
-
+def getValFunct():
+	rn = random.randint(1, 100)
+	print "Provider generating random num: ", rn
+	return rn
 
 if __name__ == "__main__":
-	provider = ThreadQueueProvider(maxSize=5)
+	provider = ThreadQueueProvider(maxSize=5, valueFunction=getValFunct)
 	getter = Getter(provider)
 
 
@@ -41,5 +45,5 @@ if __name__ == "__main__":
 			print e
 			break
 
-	provider._isRunning = False
+	provider.close()
 	getter._isRunning = False
