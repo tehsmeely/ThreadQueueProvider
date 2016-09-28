@@ -44,4 +44,4 @@ Temporary Items
 
 
 #python bytecode files
-.pyc
+*.pyc
