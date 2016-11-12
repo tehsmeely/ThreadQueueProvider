@@ -1,11 +1,16 @@
 import threading, Queue, time, random
 
+import os, sys
+parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print parentdir
+sys.path.append(parentdir) 
 from threadQueueProvider import ThreadQueueProvider
 
 random.seed()
 
 
 class Getter(threading.Thread):
+	"""Sleeping thread which periodically gets a value from the provider function"""
 	def __init__(self, provider):
 		threading.Thread.__init__(self)
 		self.provider = provider
